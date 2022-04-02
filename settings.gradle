@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "ShowMoreTextView"
 include ':app'
+include ':showmoretextview'
