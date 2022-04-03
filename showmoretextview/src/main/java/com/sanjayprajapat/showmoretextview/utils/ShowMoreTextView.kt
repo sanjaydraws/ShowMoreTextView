@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnLayout
 import com.sanjayprajapat.showmoretextview.R
 import com.sanjayprajapat.showmoretextview.enums.TextState
 import com.sanjayprajapat.showmoretextview.listener.StateChangeListener
@@ -65,16 +66,32 @@ class ShowMoreTextView @JvmOverloads constructor(
 
     private fun switchText(){
         when(textState) {
-            TextState.EXPANDED -> doCollapse()
-            TextState.COLLAPSED -> doExpand()
+            TextState.EXPANDED -> doOnCollapse()
+            TextState.COLLAPSED -> doOnExpand()
         }
     }
 
-    fun doCollapse(){
-
+    private fun doOnCollapse(){
+        if(isTextCollapsed || collapsedText.isNullOrEmpty())
+            return
+        textState = TextState.COLLAPSED
     }
 
-    fun doExpand(){
+    private fun doOnExpand(){
+        if(isTextExpanded || expendedText.isNullOrEmpty())
+            return
+        textState = TextState.EXPANDED
+    }
+
+    override fun setText(text: CharSequence?, type: BufferType?) {
+        super.setText(text, type)
+        doOnLayout {
+            post{
+                setUpShowMoreTextView()
+            }
+        }
+    }
+    private fun setUpShowMoreTextView(){
 
     }
 
