@@ -2,7 +2,7 @@ package com.sanjayprajapat.showmoretextview.enums
 
 
 
-enum class State{
+enum class TextState{
     EXPANDED, COLLAPSED
 }
 

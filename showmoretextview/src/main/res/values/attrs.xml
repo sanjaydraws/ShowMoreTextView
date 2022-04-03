@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ShowMoreTextView">
+        <attr name="showMoreMaxLine" format="integer"/>
+        <attr name="showMoreText" format="string|reference"/>
+        <attr name="showMoreTextColor" format="color|reference"/>
+    </declare-styleable>
+</resources>
