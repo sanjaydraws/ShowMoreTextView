@@ -13,10 +13,12 @@
         tools:context=".MainActivity">
 
 
-        <com.sanjayprajapat.showmoretextview.utils.ShowMoreTextView
+        <com.sanjayprajapat.showmoretextview.ShowMoreTextView
             android:layout_width="wrap_content"
+            android:id="@+id/showMoreText"
             android:layout_height="wrap_content"
-            app:showMoreMaxLine="4"
+            app:showMoreMaxLine="2"
+            android:text="@string/long_text"
             app:showMoreTextColor="@color/teal_700"
             app:showMoreText="Show More"
             app:layout_constraintStart_toStartOf="parent"
@@ -24,5 +26,13 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/showMoreText"
+            android:text="@string/long_text"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,13 +1,19 @@
-package com.sanjayprajapat.showmoretextview.utils
+
+package com.sanjayprajapat.showmoretextview
 
 import android.content.Context
+import android.graphics.Rect
 import android.util.AttributeSet
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.text.buildSpannedString
+import androidx.core.text.color
 import androidx.core.view.doOnLayout
-import com.sanjayprajapat.showmoretextview.R
+import androidx.core.view.isInvisible
 import com.sanjayprajapat.showmoretextview.enums.TextState
 import com.sanjayprajapat.showmoretextview.listener.StateChangeListener
+import com.sanjayprajapat.showmoretextview.utils.safeToInt
 
 
 class ShowMoreTextView @JvmOverloads constructor(
@@ -25,6 +31,9 @@ class ShowMoreTextView @JvmOverloads constructor(
 
     private var stateChangeListener:StateChangeListener? = null
 
+    /**
+     * this is Original text
+     * */
     private var expendedText:CharSequence =""
     private var collapsedText:CharSequence =""
 
@@ -50,6 +59,10 @@ class ShowMoreTextView @JvmOverloads constructor(
 
 
 
+    init {
+        setupAttrs(context, attrs, defStyleAttr)
+        setUpListener()
+    }
     private fun setupAttrs(context:Context?, attrs:AttributeSet?, defStyleAttr: Int?){
         val typedArray = context?.obtainStyledAttributes(attrs,R.styleable.ShowMoreTextView,defStyleAttr?:0,0)
         showMoreMaxLine = typedArray?.getInt(R.styleable.ShowMoreTextView_showMoreMaxLine,showMoreMaxLine?:0)
@@ -60,6 +73,7 @@ class ShowMoreTextView @JvmOverloads constructor(
 
     private fun setUpListener(){
         super.setOnClickListener{
+//            Toast.makeText(context,"click",Toast.LENGTH_LONG).show()
             switchText()
         }
     }
@@ -85,15 +99,58 @@ class ShowMoreTextView @JvmOverloads constructor(
 
     override fun setText(text: CharSequence?, type: BufferType?) {
         super.setText(text, type)
+
+        /**
+         * if view has been laid out and has not requested a layout , the action will be performed straight away
+         * otherwise the action will be performed after the view is next laid out
+         * */
         doOnLayout {
-            post{
+//            post{
                 setUpShowMoreTextView()
-            }
+//            }
         }
     }
     private fun setUpShowMoreTextView(){
+        if(ifNeedToSkipSetup()){
+            return
+        }
+        expendedText = text
+        val adjustCutCount = getAdjustCutCount(maxLine = showMoreMaxLine, showMoreText)
+        val maxTextIndex = layout.getLineVisibleEnd(showMoreMaxLine?.minus(1).safeToInt())
+        val originalSubText = expendedText.substring(0, maxTextIndex - 1 - adjustCutCount)
 
+        collapsedText = buildSpannedString {
+            append(originalSubText)
+            color(showMoreColor.safeToInt()) { append(showMoreText) }
+        }
+
+        text = collapsedText
     }
 
 
+    private fun ifNeedToSkipSetup():Boolean =   isInvisible || lineCount <= showMoreMaxLine?:0 || isTextExpanded || text == null || text == collapsedText
+
+    private fun  getAdjustCutCount(maxLine:Int?, readMoreText:String?):Int{
+        val lastLineStartIndex = layout.getLineVisibleEnd(maxLine?.minus(2)?:0) + 1
+        val lastLineEndIndex = layout.getLineVisibleEnd(maxLine?.minus(1)?:0)
+        val lastLineText = text.substring(lastLineStartIndex, lastLineEndIndex)
+
+        val bounds = Rect()
+        paint.getTextBounds(lastLineText, 0 , lastLineText.length, bounds)
+        var adjustCutCount = -1
+        do {
+            adjustCutCount++
+            val subText = lastLineText.substring(0, lastLineText.length- adjustCutCount)
+            val replacedText = subText + readMoreText
+            paint.getTextBounds(replacedText, 0, replacedText.length, bounds)
+            val replacedTextWidth = bounds.width()
+        }while (replacedTextWidth>width)
+        return adjustCutCount
+
+        return 0
+    }
+
+    public  fun addOnStateChangeListener(stateChangeListener: StateChangeListener) {
+        this.stateChangeListener = stateChangeListener
+    }
 }
