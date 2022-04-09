@@ -46,6 +46,7 @@ dependencies {
 
     implementation project(':showmoretextview')
 
+//    implementation 'com.github.sanjaydraws:ShowMoreTextView:v1.0.0'
 
 
 }
