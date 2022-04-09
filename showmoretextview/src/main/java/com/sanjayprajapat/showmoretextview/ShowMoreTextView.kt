@@ -15,6 +15,13 @@ import com.sanjayprajapat.showmoretextview.enums.TextState
 import com.sanjayprajapat.showmoretextview.listener.StateChangeListener
 import com.sanjayprajapat.showmoretextview.utils.safeToInt
 
+/**
+ * @author : Sanjay Prajapat
+ * Created On: 09-4-2022
+ * Github:https://github.com/sanjaydraws
+ * Blog: https://dev.to/sanjayprajapat
+ * https://sanjayprajapat.hashnode.dev/
+ ***/
 
 class ShowMoreTextView @JvmOverloads constructor(
     context: Context,
@@ -35,6 +42,9 @@ class ShowMoreTextView @JvmOverloads constructor(
      * this is Original text
      * */
     private var expendedText:CharSequence =""
+    /**
+     *
+     * */
     private var collapsedText:CharSequence =""
 
 
@@ -74,11 +84,11 @@ class ShowMoreTextView @JvmOverloads constructor(
     private fun setUpListener(){
         super.setOnClickListener{
 //            Toast.makeText(context,"click",Toast.LENGTH_LONG).show()
-            switchText()
+            switchTextState()
         }
     }
 
-    private fun switchText(){
+    private fun switchTextState(){
         when(textState) {
             TextState.EXPANDED -> doOnCollapse()
             TextState.COLLAPSED -> doOnExpand()
@@ -105,9 +115,9 @@ class ShowMoreTextView @JvmOverloads constructor(
          * otherwise the action will be performed after the view is next laid out
          * */
         doOnLayout {
-//            post{
+            post{
                 setUpShowMoreTextView()
-//            }
+            }
         }
     }
     private fun setUpShowMoreTextView(){
@@ -115,7 +125,7 @@ class ShowMoreTextView @JvmOverloads constructor(
             return
         }
         expendedText = text
-        val adjustCutCount = getAdjustCutCount(maxLine = showMoreMaxLine, showMoreText)
+        val adjustCutCount = getAdjustCutCount(maxLine = showMoreMaxLine, showMoreText) // 6
         val maxTextIndex = layout.getLineVisibleEnd(showMoreMaxLine?.minus(1).safeToInt())
         val originalSubText = expendedText.substring(0, maxTextIndex - 1 - adjustCutCount)
 
@@ -133,10 +143,10 @@ class ShowMoreTextView @JvmOverloads constructor(
     private fun  getAdjustCutCount(maxLine:Int?, readMoreText:String?):Int{
         val lastLineStartIndex = layout.getLineVisibleEnd(maxLine?.minus(2)?:0) + 1
         val lastLineEndIndex = layout.getLineVisibleEnd(maxLine?.minus(1)?:0)
-        val lastLineText = text.substring(lastLineStartIndex, lastLineEndIndex)
+        val lastLineText = text.substring(lastLineStartIndex, lastLineEndIndex)//available, but the majority have suffered alteration in
 
         val bounds = Rect()
-        paint.getTextBounds(lastLineText, 0 , lastLineText.length, bounds)
+        paint.getTextBounds(lastLineText, 0 , lastLineText.length, bounds)//Rect(1, -22 - 647, 6)
         var adjustCutCount = -1
         do {
             adjustCutCount++
@@ -146,8 +156,6 @@ class ShowMoreTextView @JvmOverloads constructor(
             val replacedTextWidth = bounds.width()
         }while (replacedTextWidth>width)
         return adjustCutCount
-
-        return 0
     }
 
     public  fun addOnStateChangeListener(stateChangeListener: StateChangeListener) {
