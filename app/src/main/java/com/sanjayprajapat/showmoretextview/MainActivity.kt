@@ -7,6 +7,7 @@ import com.sanjayprajapat.showmoretextview.databinding.ActivityMainBinding
 import com.sanjayprajapat.showmoretextview.enums.TextState
 import com.sanjayprajapat.showmoretextview.listener.StateChangeListener
 
+
 class MainActivity : AppCompatActivity() {
     var binding: ActivityMainBinding? = null
     override fun onCreate(savedInstanceState: Bundle?) {
