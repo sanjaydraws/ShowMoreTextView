@@ -2,7 +2,6 @@
 
 # ShowMoreTextView
 
-![buildStatus](https://img.shields.io/github/workflow/status/sanjaydraws/ShowMoreTextView/Java%20CI%20with%20Gradle?style=plastic)
 ![latestVersion](https://img.shields.io/github/v/release/sanjaydraws/ShowMoreTextView)
 <a href="https://twitter.com/ENTER_YOUR_TWITTER_USERNAME_HERE" target="_blank">
 <img alt="Twitter: sanjay_draws" src="https://img.shields.io/twitter/follow/sanjay_draws.svg?style=social" />
@@ -49,7 +48,7 @@ dependencies
             />
 ```
 
-### add `StateChangeListener` when `TextState` changes  
+### add `StateChangeListener` when `TextState` changes
 ```
  binding?.showMoreText?.addOnStateChangeListener(object :StateChangeListener{
             override fun onStateChange(textState: TextState) {
@@ -60,10 +59,6 @@ dependencies
             }
         })
 ```
-
-
-|![](https://i.giphy.com/media/tl9tKCyXYBt6A3GweC/giphy.gif) |
-|:--:|
 
 ## ✍️ Author
 
