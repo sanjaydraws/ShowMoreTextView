@@ -32,6 +32,7 @@ class ShowMoreTextView @JvmOverloads constructor(
         private const val MAX_LINE_DEFAULT = 3
     }
 
+    
     private var showMoreMaxLine:Int? = MAX_LINE_DEFAULT
     private var showMoreText:String? = context.getString(R.string.show_more)
     private var showMoreColor:Int? = ContextCompat.getColor(context, R.color.show_more_color)
