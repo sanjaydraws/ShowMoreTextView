@@ -29,7 +29,7 @@ allprojects {
 ```
 dependencies
 {
-    implementation 'com.github.sanjaydraws:ShowMoreTextView:1.0.2'
+    implementation 'com.github.sanjaydraws:ShowMoreTextView:1.0.3'
 }
 ```
 ## How to use
