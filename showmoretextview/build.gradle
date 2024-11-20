@@ -12,12 +12,12 @@ def appVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
 def appVersionCode = versionMajor * 1000 + versionMinor * 100 + versionPatch
 
 android {
-    compileSdk 31
+    compileSdk 34
     namespace 'com.sanjayprajapat.showmoretextview' // Replace with your app's package name
 
     defaultConfig {
-        minSdk 22
-        targetSdk 31
+        minSdk 24
+        targetSdk 34
         versionCode appVersionCode
         versionName appVersion
 
