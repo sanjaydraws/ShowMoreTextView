@@ -13,6 +13,7 @@ def appVersionCode = versionMajor * 1000 + versionMinor * 100 + versionPatch
 
 android {
     compileSdk 31
+    namespace 'com.sanjayprajapat.showmoretextview' // Replace with your app's package name
 
     defaultConfig {
         minSdk 22
