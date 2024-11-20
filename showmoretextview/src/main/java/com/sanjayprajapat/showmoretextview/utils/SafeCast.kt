@@ -14,3 +14,12 @@ fun Any?.safeToInt(): Int {
         0
     }
 }
+@NotNull
+fun Any?.safeToFloat(): Float {
+    return try {
+        this?.toString()?.toFloat() ?: 0f
+    } catch (e: Exception) {
+        e.printStackTrace()
+        0f
+    }
+}

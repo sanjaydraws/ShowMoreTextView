@@ -10,7 +10,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:fitsSystemWindows="true"
+
+        tools:context="com.sanjayprajapat.showmoretextviewapp.MainActivity">
 
 
         <com.sanjayprajapat.showmoretextview.ShowMoreTextView
@@ -18,12 +20,28 @@
             android:id="@+id/showMoreText"
             android:layout_height="wrap_content"
             app:showMoreMaxLine="3"
-            android:text="@string/long_text"
-            app:showMoreTextColor="#87012B"
+            android:text="We are currently handling your inquiries and international chauffeur drive bookings offline. Please write to us at globalchauffeurdrive@avis.co.in or contact us at +91 124 4724 888 we will revert soon."
+            app:showMoreTextColor="#3F51B5"
             app:showMoreText="...Show More"
+            android:layout_marginTop="25dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:showMoreTextSize="5sp"
             app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <com.sanjayprajapat.showmoretextview.ShowMoreTextView
+            android:layout_width="wrap_content"
+            android:id="@+id/showMoreText1"
+            android:layout_height="wrap_content"
+            android:text="We are currently handling your inquiries and international chauffeur drive bookings offline. Please write to us at globalchauffeurdrive@avis.co.in or contact us at +91 124 4724 888 we will revert soon."
+            android:layout_marginTop="25dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/showMoreText"
+            app:showMoreMaxLine="3"
+            app:showMoreTextColor="#3F51B5"
+            app:showMoreText="...Show More"
             />
 
 

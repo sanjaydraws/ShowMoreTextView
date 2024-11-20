@@ -3,6 +3,8 @@ package com.sanjayprajapat.showmoretextview
 
 import android.content.Context
 import android.graphics.Rect
+import android.text.Spanned
+import android.text.style.AbsoluteSizeSpan
 import android.util.AttributeSet
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
@@ -13,7 +15,9 @@ import androidx.core.view.doOnLayout
 import androidx.core.view.isInvisible
 import com.sanjayprajapat.showmoretextview.enums.TextState
 import com.sanjayprajapat.showmoretextview.listener.StateChangeListener
+import com.sanjayprajapat.showmoretextview.utils.safeToFloat
 import com.sanjayprajapat.showmoretextview.utils.safeToInt
+import com.sanjayprajapat.showmoretextview.utils.toSp
 
 /**
  * @author : Sanjay Prajapat
@@ -30,23 +34,26 @@ class ShowMoreTextView @JvmOverloads constructor(
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
     companion object {
         private const val MAX_LINE_DEFAULT = 3
+        private const val DEFAULT_SHOW_MORE_TEXT_SIZE = 14f
+
     }
 
 
     private var showMoreMaxLine:Int? = MAX_LINE_DEFAULT
     private var showMoreText:String? = context.getString(R.string.show_more)
     private var showMoreColor:Int? = ContextCompat.getColor(context, R.color.show_more_color)
+    private var showMoreTextSize: Float? = DEFAULT_SHOW_MORE_TEXT_SIZE
 
     private var stateChangeListener:StateChangeListener? = null
 
     /**
      * this is Original text
      * */
-    private var expendedText:CharSequence =""
+    private var expendedText:CharSequence? =""
     /**
      *
      * */
-    private var collapsedText:CharSequence =""
+    private var collapsedText:CharSequence? =""
 
 
     /**
@@ -79,6 +86,7 @@ class ShowMoreTextView @JvmOverloads constructor(
         showMoreMaxLine = typedArray?.getInt(R.styleable.ShowMoreTextView_showMoreMaxLine,showMoreMaxLine?:0)
         showMoreColor = typedArray?.getColor(R.styleable.ShowMoreTextView_showMoreTextColor,showMoreColor?:0)
         showMoreText = typedArray?.getString(R.styleable.ShowMoreTextView_showMoreText)?:showMoreText
+        showMoreTextSize = typedArray?.getDimension(R.styleable.ShowMoreTextView_showMoreTextSize, showMoreTextSize?.toSp(context).safeToFloat()) ?: showMoreTextSize
 
     }
 
@@ -128,18 +136,23 @@ class ShowMoreTextView @JvmOverloads constructor(
         expendedText = text
         val adjustCutCount = getAdjustCutCount(maxLine = showMoreMaxLine, showMoreText) // 6
         val maxTextIndex = layout.getLineVisibleEnd(showMoreMaxLine?.minus(1).safeToInt())
-        val originalSubText = expendedText.substring(0, maxTextIndex - 1 - adjustCutCount)
+        val originalSubText = expendedText?.substring(0, maxTextIndex - 1 - adjustCutCount)
 
         collapsedText = buildSpannedString {
             append(originalSubText)
             color(showMoreColor.safeToInt()) { append(showMoreText) }
+            // Apply custom text size for the "Show More" part
+            if (showMoreTextSize != null) {
+                val sizeSpan = AbsoluteSizeSpan(showMoreTextSize!!.toInt()) // Apply text size here
+                setSpan(sizeSpan, originalSubText?.length.safeToInt(), originalSubText?.length.safeToInt() + (showMoreText?.length ?: 0), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
         }
 
         text = collapsedText
     }
 
 
-    private fun ifNeedToSkipSetup():Boolean =   isInvisible || lineCount <= showMoreMaxLine?:0 || isTextExpanded || text == null || text == collapsedText
+    private fun ifNeedToSkipSetup():Boolean =   isInvisible || lineCount <= (showMoreMaxLine?:0) || isTextExpanded || text == null || text == collapsedText
 
     private fun  getAdjustCutCount(maxLine:Int?, readMoreText:String?):Int{
         val lastLineStartIndex = layout.getLineVisibleEnd(maxLine?.minus(2)?:0) + 1
@@ -161,5 +174,15 @@ class ShowMoreTextView @JvmOverloads constructor(
 
     public  fun addOnStateChangeListener(stateChangeListener: StateChangeListener) {
         this.stateChangeListener = stateChangeListener
+    }
+
+
+    /**
+     * Updates the text size for the "Show More" part programmatically.
+     * @param size The new text size in SP (scale-independent pixels).
+     */
+    fun setMoreTextSize(size:Float?){
+        showMoreTextSize = size?.toSp(context).safeToFloat()
+        setUpShowMoreTextView()
     }
 }

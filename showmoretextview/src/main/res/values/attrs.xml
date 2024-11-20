@@ -4,5 +4,7 @@
         <attr name="showMoreMaxLine" format="integer"/>
         <attr name="showMoreText" format="string|reference"/>
         <attr name="showMoreTextColor" format="color|reference"/>
+        <attr name="showMoreTextSize" format="dimension"/>
+
     </declare-styleable>
 </resources>

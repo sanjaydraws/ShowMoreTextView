@@ -5,10 +5,10 @@ plugins {
 
 android {
     compileSdk 35
-    namespace 'com.sanjayprajapat.showmoretextview' // Replace with your app's package name
+    namespace 'com.sanjayprajapat.showmoretextviewapp' // Replace with your app's package name
 
     defaultConfig {
-        applicationId "com.sanjayprajapat.showmoretextview"
+        applicationId "com.sanjayprajapat.showmoretextviewapp"
         minSdk 24
         targetSdk 35
         versionCode 1
